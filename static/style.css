@@ -36,7 +36,7 @@ table, th, td {
 
 
 .cell-sudoku {
-    padding: 0;                 
+    padding: 0;
     margin: 0;
     border: 1px solid black;
 }
@@ -83,46 +83,46 @@ table, th, td {
 
 
 html, body {
-    height: 100%;      
-    margin: 0;    
-    overflow: hidden;     
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
 }
 
-body {    
-    height: 100vh;  
-    background-color:darkslategray;    
+body {
+    height: 100vh;
+    background-color:darkslategray;
     display: grid;
-    place-items: center;      
+    place-items: center;
 }
 
 
 
 .sudoku-window {
-    width: 500px;
-    height: 700px;
+    width: 400px;
+    height: 600px;
     display: block;
     place-items: center;
     box-shadow: 0 0 20px antiquewhite;
     background-color: antiquewhite;
     border-radius: 10px;
     padding: 5px;
-} 
+}
 
 .grid{
-    width: 500px;
-    height: 500px;
+    width: 400px;
+    height: 400px;
     aspect-ratio: 1 / 1;
 }
 
 .buttons-grid {
   border-collapse: collapse;
   outline: none;
-  width: 500px;
+  width: 400px;
 }
 .info {
-  display: flex;            
-  justify-content: space-between;  
-  align-items: center;        
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   margin-bottom: 20px;
   font-family: sans-serif;
@@ -175,7 +175,7 @@ a {
 
 .buttons-grid {
     table-layout: fixed;
-    width: 500px;
+    width: 400px;
     border: 0;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -218,26 +218,38 @@ hr {
   font-weight: 800;
   font-size: 40px;
   text-align: center;
+  margin: 0;
 }
 .about h2{
   font-weight: 800;
   font-size: 30px;
   text-align: center;
 }
+.about .info {
+    margin: 0;
+}
 
 .about li{
   font-family: sans-serif;
   font-size: 20px;
-  width: 500px;
-  
+  width: 400px;
+  margin: 0;
+  padding: 0;
+
 }
 .about ul {
   text-align: left;
 }
 
 .about {
-  width: 500px;
+  width: 400px;
 }
+.about p {
+    font-size: 20px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 .clickable:hover{
   color:steelblue;
 }
