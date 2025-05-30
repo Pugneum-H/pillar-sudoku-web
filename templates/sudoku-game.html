@@ -1,0 +1,98 @@
+{% block sudoku %}
+<div class="grid-itself">
+  <div class=""></div>
+<form  id="fields" method="POST" action="/" name="fields">
+<table class="grid {{ 'incorrect' if correct == False else ''}} {{ 'complete' if complete == True and correct == True else '' }}">
+    {% for h in range(1, width*height+1, 1) %}
+    <tr>
+      
+        {% for w in range(1, width*height+1, 1) %}
+        {% set state = 'readonly' if orig[(h-1)*width*height+w-1]|trim|length > 0 or complete==True else '' %}
+        {% set border = namespace(value='') %}
+        {% if h == 1 %} {% set border.value = border.value + 'top ' %} {% endif %}
+        {% if h == width*height %} {% set border.value = border.value + 'bottom ' %} {% endif %}
+        {% if w == 1 %} {% set border.value = border.value + 'left ' %} {% endif %}
+        {% if w == width*height %} {% set border.value = border.value + 'right ' %} {% endif %}
+        {% if (w-1) % width == 0 and 1 < width < width*height %} {% set border.value = border.value + 'left ' %} {% endif %}
+        {% if (h-1) % height == 0 and 1 < width < width*height %} {% set border.value = border.value + 'top ' %} {% endif %}
+        <td class="cell-sudoku {{border.value}}" id="{{ (h-1)*width*height+w }}">
+            <input class="cell-itself" type="text" maxlength="1"  name="fields" id="{{ (h-1)*width*height+w }}" oninput="onInput(event)" value="{{ grid[(h-1)*width*height+w-1]|trim }}"  {{state}} />
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+</form>
+</div>
+<div class="control-panel">
+
+<form class="ctrl" name="digits" id="digits">
+<table class="buttons-grid">
+  <tr>
+  {% for i in range(height*width) %}
+    <td class="gui-button">
+      <button onmousedown="enter('{{ fill_charset[i] }}');" class="char-control" id="{{ fill_charset[i] }}">{{ fill_charset[i] }}</button>
+    </td>
+    {% endfor %}
+      <td class="gui-button">
+      <button onmousedown="enter('');" class="char-control" id="s">×</button>
+    </td>
+  </tr>
+</table>
+</form>
+</div>
+
+<script>
+const onInput = event => {
+    event.target.value = event.target.value.replace(/[^{{ fill_charset }}]/g, '')
+}
+</script>
+<script>
+  const inputs = document.querySelectorAll('#fields input[type="text"]');
+
+  inputs.forEach(input => {
+    input.addEventListener('input', () => {
+      document.getElementById('fields').submit();
+    });
+  });
+</script>
+
+<script>
+  function enter(value) {
+    const activeInput = document.querySelector('input.cell-itself:focus'); 
+    if (activeInput && !activeInput.readOnly) {
+      activeInput.value = value;
+      const inputEvent = new Event('input', { bubbles: true });
+      activeInput.dispatchEvent(inputEvent);
+      setTimeout(() => activeInput.focus(), 0); 
+      document.getElementById('fields').submit();
+    }
+  }
+</script>
+<script>
+function moveCursorToEnd(event) {
+  const input = event.target;
+  setTimeout(() => {
+      // Move the cursor to the end of the input
+      input.selectionStart = input.selectionEnd = input.value.length;
+    }, 0); // Use setTimeout to allow the DOM to update first
+  }
+inputs.forEach(input => {
+  input.addEventListener('focus', moveCursorToEnd);
+});
+</script>
+<script>
+ if (isMobile()) {
+    inputs.forEach(input => {
+      input.setAttribute("readonly", true);
+      input.addEventListener("focus", () => {
+        input.blur();
+        selectCell(input);
+      });
+    });
+  }
+</script>
+
+
+
+{% endblock %}

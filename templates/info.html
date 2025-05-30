@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>pillar-sudoku</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/svg+xml"  href="{{ url_for('static', filename='icon.svg') }}">
+  </head>
+  <body>
+    <div class="sudoku-window information">
+
+        <div class="info">
+          <a class="title" href="{{ url_for('main') }}">🏛️ pillar-sudoku 🏛️</a>
+          <a class="side linker" href="{{ url_for('main') }}">[home]</a>
+        </div>
+    <div class="about">
+        <h1 style="margin: 0;"><i>pillar-sudoku  -   web</i></h1>
+        <hr>
+        <ul style="list-style: none;">
+            <li>Made by: <b>G. Mh.</b><a class="clickable" href="https://github.com/Pugneum-H"> &nbsp;[GitHub] &nbsp;</a>in less than a week</li>
+            <li>License : <b>MIT license</b><a class="clickable" href="https://github.com/Pugneum-H/pillar-sudoku-web/blob/main/LICENSE"> &nbsp;[Text] &nbsp;</a>
+        </ul>
+        <h2>This project uses code from:</h2>
+        <ol>
+            <li><p>pillar-sudoku <br>
+            Copyright (c) G. Mh. <br>
+            <b>MIT License</b>
+            <a class="clickable" href="https://github.com/Pugneum-H/pillar-sudoku">[License]</a></p>
+            </li>
+            <li><p>Flask <br>
+            Copyright (c) 2010 Pallets <br>
+            <b>BSD 3-Clause License</b>
+            <a class="clickable" href="https://github.com/pallets/flask/blob/main/LICENSE.txt">[License]</a></p>
+            </li>
+            <li><p>Flask-WTF <br>
+            Copyright (c) 2010 Pallets <br>
+            <b>BSD 3-Clause License</b>
+            <a class="clickable" href="https://github.com/wtforms/flask-wtf/blob/master/LICENSE.rst">[License]</a></p>
+            </li>
+            <li><p>Flask-Talisman <br>
+            Copyright (c) Google LLC <br>
+            <b>BSD 3-Clause License</b>
+            <a class="clickable" href="https://github.com/GoogleCloudPlatform/flask-talisman/blob/master/LICENSE">[License]</a></p>
+            </li>
+            </ol>
+    </div>
+  </body>
+</html>

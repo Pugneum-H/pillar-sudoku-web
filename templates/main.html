@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>pillar-sudoku</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='icon.png') }}">
+  </head>
+  <body>
+    <div class="sudoku-window">
+        <div class="info">
+          <a class="title" href="{{ url_for('main') }}">🏛️ pillar-sudoku 🏛️</a>
+          <a class="side linker" href="{{ url_for('info') }}">[info]</a>
+        </div>
+        <div class="selector">
+      <form method="POST" action="/">
+      <label class="selection-label" style="background-color:transparent; border: 0; font-family:   sans-serif; font-weight: 500;">New Sudoku</label>
+      <select name="sizes" class="dropdown">
+        <option value="32" {% if size_selected == '32' %}selected{% endif %}>3x2</option>
+        <option value="33" {% if size_selected == '33' %}selected{% endif %}>3x3</option>
+        <option value="44" {% if size_selected == '44' %}selected{% endif %}>4x4</option>
+      </select>
+      <select name="difficulties" class="dropdown">
+        <option value="0.45" {% if difficulty_selected == '0.45' %}selected{% endif %}>Easy</option>
+        <option value="0.65" {% if difficulty_selected == '0.65' %}selected{% endif %}>Medium</option>
+        <option value="0.85" {% if difficulty_selected == '0.85' %}selected{% endif %}>Hard</option>
+      </select>
+      <button name="new" class="usualbutton" type="submit">Create new</button>
+      </form> 
+            <hr>
+        </div>
+    {% block sudoku %}
+      {% include "sudoku-game.html" %}
+    {% endblock %}
+    </div>
+
+  </body>
+</html>
