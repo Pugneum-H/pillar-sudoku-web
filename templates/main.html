@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>pillar-sudoku</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-        <link rel="shortcut icon" href="{{ url_for('static', filename='icon.png') }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='icon.svg') }}" type="image/svg+xml">
   </head>
   <body>
     <div class="sudoku-window">
@@ -28,7 +28,7 @@
         <option value="0.85" {% if difficulty_selected == '0.85' %}selected{% endif %}>Hard</option>
       </select>
       <button name="new" class="usualbutton" type="submit">Create new</button>
-      </form> 
+      </form>
             <hr>
         </div>
     {% block sudoku %}
