@@ -35,6 +35,15 @@
       {% include "sudoku-game.html" %}
     {% endblock %}
     </div>
+<script>
+        if (!sessionStorage.getItem('first_visit')) {
+            sessionStorage.setItem('first_visit', 'true');
+            const newButton = document.querySelector('button[name="new"]');
+            if (newButton) {
+                newButton.click();
+            }
+        } else {}
 
+    </script>
   </body>
 </html>
