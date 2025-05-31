@@ -5,75 +5,81 @@ from pillar_sudoku.pillar_sudoku import *
 
 
 app = Flask(__name__)
+app.secret_key = "" # nuh uh
 
 
-
-
-orig = []
-grid = []
-width = 3
-height = 3
-fill_charset = "123456789ABCDEFG"
-ratio = 0.5
-sudoku = Sudoku([width,height], fill_charset[:width*height], (width*height)**2)
+app.config["DEBUG"] = True
 
 def gen(fill_charset, width, height, ratio):
-    global grid, orig, sudoku, out
-    sudoku = Sudoku([width, height], fill_charset[:width*height], (width*height)**2)
-    sudoku.generate()
-    sudoku.remove(ratio)
-    orig.clear(); grid.clear()
-    grid = [i.strip(" ") for i in sudoku.get_grid()]
-    orig = [i.strip(" ") for i in sudoku.get_grid()]
-    return grid, orig
+        sudoku = Sudoku([width, height], fill_charset[:width*height], (width*height)**2, grid=session["grid"])
+        sudoku.generate()
+        sudoku.remove(ratio)
+        session["orig"].clear(); session['grid'].clear()
+        session["orig"] = [i.strip(" ") for i in sudoku.get_grid()]
+        session['grid'] = [i.strip(" ") for i in sudoku.get_grid()]
+        return session['grid'], session['orig'], sudoku
 
 
 def chars_filter(string, charset, len : int):
-    return "".join([c for c in string if c in fill_charset])[:len]
+    return "".join([c for c in string if c in session['fill_charset']])[:len]
 
-gen(fill_charset, width, height, ratio)
-while not sudoku.check()[0] == True:
-    gen(fill_charset, width, height, ratio)
-grid.clear(); orig.clear()
-grid = sudoku.get_grid()
-orig = sudoku.get_grid()
 
 @app.route("/", methods=['GET', 'POST'])
 def main():
-    global grid, orig, width, height, fill_charset, sudoku, ratio, out
+    if not 'init'  in session:
+        print("S"*1000)
+        session['orig'] = []
+        session['grid'] = []
+        session['width'] = 3
+        session['height'] = 3
+        session['fill_charset'] = "123456789ABCDEFG"
+        session['ratio'] = 0.5
+        sudoku = Sudoku([session['width'],session['height']], session['fill_charset'][:session['width']*session['height']], (session['width']*session['height'])**2)
+        sudoku = gen(session['fill_charset'], session['width'], session['height'], session['ratio'])[2]
+        while not sudoku.check()[0] == True:
+            sudoku = gen(session['fill_charset'], session['width'], session['height'], session['ratio'])[2]
+        session['grid'].clear(); session['orig'].clear()
+        session['grid'] = sudoku.get_grid()
+        session["orig"] = sudoku.get_grid()
+        session["init"] = True
+
     if request.method == 'POST':
         if "new" in request.form:
-            try: width, height, ratio = int(list(request.form["sizes"])[0]), int(list(request.form["sizes"])[1]), float(request.form["difficulties"])
+            try: session['width'], session['height'], session['ratio'] = int(list(request.form["sizes"])[0]), int(list(request.form["sizes"])[1]), float(request.form["difficulties"])
             except: pass
-            gen(fill_charset, width, height, ratio)
+            sudoku = gen(session['fill_charset'], session['width'], session['height'], session['ratio'])[2]
             while not sudoku.check()[0] == True:
-                gen(fill_charset, width, height, ratio)
-            grid.clear(); orig.clear()
-            grid = sudoku.get_grid()
-            orig = sudoku.get_grid()
+                sudoku = gen(session['fill_charset'], session['width'], session['height'], session['ratio'])[2]
+            session['grid'].clear(); session['orig'].clear()
+            session['grid'] = sudoku.get_grid()
+            session['orig'] = sudoku.get_grid()
         else:
-            orig = orig.copy()
-            grid.clear()
-            sudoku.set_grid([""*(width*height)**2])
-            sudoku.set_grid([chars_filter(i, fill_charset, 1)+" "*(1-len(i)) for i in request.values.getlist("fields")])
+            print([session['width'], session['height']], session["fill_charset"][:session["width"]*session["height"]], (session["width"]*session["height"])**2, session["grid"])
+            sudoku = Sudoku([session['width'], session['height']], session["fill_charset"][:session["width"]*session["height"]], (session["width"]*session["height"])**2, grid=session["grid"])
+            session['orig'] = session['orig'].copy()
+            session["grid"].clear()
+            sudoku.set_grid([""*(session['width']*session['height'])**2])
+            sudoku.set_grid([chars_filter(i, session['fill_charset'], 1)+" "*(1-len(i)) for i in request.values.getlist("fields")])
 
-            grid = sudoku.get_grid()
+            session['grid'] = sudoku.get_grid()
 
-
+    sudoku = Sudoku([session['width'], session['height']], session["fill_charset"][:session["width"]*session["height"]], (session["width"]*session["height"])**2, grid=session["grid"])
 
     if request.method == 'GET':
         pass
-    complete = sudoku.check()[1]
-    correct = sudoku.check()[0]
+
+    session['complete'] = sudoku.check()[1]
+    session['correct'] = sudoku.check()[0]
 
 
-    return render_template('main.html', grid=sudoku.get_grid(), orig=orig, width=width, height=height,
-                           fill_charset=fill_charset[:width*height], correct=correct, complete=complete,
-                           size_selected=str(width)+str(height), difficulty_selected=str(ratio))
+    return render_template('main.html', grid=sudoku.get_grid(), orig=session['orig'], width=session['width'], height=session['height'],
+                           fill_charset=session['fill_charset'][:session['width']*session['height']], correct=session['correct'], complete=session['complete'],
+                           size_selected=str(session['width'])+str(session['height']), difficulty_selected=str(session['ratio']))
 
 @app.route("/info")
 def info():
     return render_template("info.html")
 
 
-
+if __name__ == "__main__":
+    app.run(threaded = True, debug=True)
