@@ -10,12 +10,3 @@ Copyright (c) 2010 Pallets
 BSD 3-Clause License
 https://github.com/pallets/flask/blob/main/LICENSE.txt
 
-3. Flask-WTF
-Copyright (c) 2010 Pallets
-BSD 3-Clause License
-https://github.com/wtforms/flask-wtf/blob/master/LICENSE.rst
-
-4. Flask-Talisman
-Copyright (c) Google LLC
-BSD 3-Clause License
-https://github.com/GoogleCloudPlatform/flask-talisman/blob/master/LICENSE
