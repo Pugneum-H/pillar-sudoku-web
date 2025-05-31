@@ -8,15 +8,15 @@ ERROR_VAL_CHARSET = "Invalid value. No spaces allowed in fill_charset."
 
 class Sudoku:
     """Sudoku class - used for everything"""
-    def __init__(self, sector_dimensions : list[int] = [3,3], fill_charset : str = "123456789", rnd_steps : int = 81):
+    def __init__(self, sector_dimensions : list[int] = [3,3], fill_charset : str = "123456789", rnd_steps : int = 81, **kwargs):
         if sector_dimensions[0] >= 2 and sector_dimensions[1] >= 2 and len(fill_charset) == sector_dimensions[0]*sector_dimensions[1] and rnd_steps > 0:
             self.__rnd_steps = rnd_steps
             self.__sector_width  = sector_dimensions[0]
             self.__sector_height = sector_dimensions[1]
             if " " in fill_charset: raise ValueError(ERROR_VAL_CHARSET)
             self.__fill_charset = fill_charset
-            self.__grid = [str(_) for _ in range((self.__sector_width*self.__sector_height)**2)]
-            self.__kept = [_ for _ in range((self.__sector_width*self.__sector_height)**2)]
+            self.__grid = kwargs.get("grid", [str(_) for _ in range((self.__sector_width*self.__sector_height)**2)])
+            self.__kept = [_ for _ in range((self.__sector_width*self.__sector_height)**2)] 
         else:
             raise ValueError(ERROR_VAL_INIT)
     
@@ -164,3 +164,15 @@ class Sudoku:
     def set_grid(self, grid : list[str]):
         if all(_ in self.__fill_charset or _ == " " for _ in grid) and len(grid) == (self.__sector_width*self.__sector_height)**2:
             self.__grid = grid
+    
+    def to_dict(self):
+        return {
+            "grid" : self.__grid,
+            "width": self.__sector_width,
+            "height": self.__sector_height,
+            "fill_charset": self.__fill_charset,
+            "kept":self.__kept,
+            "rnd_steps":self.__rnd_steps
+        }
+    def from_dict(cls, data):
+        return cls([data["width"], data["height"]], data["fill_charset"], data["rnd_steps"])
