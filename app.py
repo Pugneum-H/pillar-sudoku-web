@@ -1,7 +1,5 @@
 from flask import *
 from pillar_sudoku.pillar_sudoku import *
-# from flask_wtf.csrf import CSRFProtect
-# from flask_talisman import Talisman
 
 
 
@@ -10,8 +8,6 @@ app = Flask(__name__)
 
 
 
-# Talisman(app)
-# csrf = CSRFProtect(app)
 
 orig = []
 grid = []
