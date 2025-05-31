@@ -29,7 +29,7 @@ table, th, td {
 .cell-itself:focus:read-only {
     background-color: SkyBlue;
 }
-.cell-itself:read-only {
+.cell-itself[data-special="readonly"] {
     color: black;
     font-weight: 700;
 }
